@@ -50,8 +50,21 @@ ramen_ratings_top_countries <- ramen_ratings %>%
 
 library(ggdark) #for dark_mode-plots. I like them
 
+tiff('Best_Ramen_countries.tiff', units="in", width=16, height=9, res=400, compression = 'lzw')
+
+ggplot(data = ramen_ratings_top_countries, mapping = aes(x = fct_reorder(
+  country, stars, fun = mean, na.rm = T), y = stars)) +
+  coord_flip() + geom_boxplot() + geom_jitter(aes(color = style),
+                                              size = 1,
+                                              height = 0.1,
+                                              alpha  = 0.3) +
+  labs(
+    title = "Top ramen-producing countries (n> 20)",
+    x = "Country",
+    y = "Rating(stars)",
+    caption = "M.v.R., 2019"
+  ) + dark_theme_bw() +
+  theme(axis.title = element_text(size = 18), axis.text = element_text(size = 14), legend.title = element_text(size = 14), title = element_text(size = 24))
 
 
-ggplot(data = ramen_ratings_top_countries, mapping = aes(x = fct_reorder(country, stars, fun = mean, na.rm = T), y = stars)) + 
-  coord_flip() + geom_boxplot() + geom_jitter( aes(color = style), size = 1, height = 0.1, alpha  = 0.3) +
-  labs(title = "Top ramen-producing countries (n> 20)", x = "Country", y = "Rating(stars)", caption = "M.v.R., 2019") + dark_theme_bw()
+dev.off()
